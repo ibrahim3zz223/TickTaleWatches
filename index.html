@@ -612,6 +612,69 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
     .star-opt svg, button.rev-tag, .pm-rv-btn{transition:none;}
     .rf-spin{animation:none; border-top-color:currentColor; opacity:.55;}
   }
+
+  /* ===== Loyalty card (data from Google Sheets via Apps Script) ===== */
+  .loyalty .section-head p{color:var(--silver-dim);}
+  .ly-wrap{max-width:720px; margin:0 auto;}
+  .ly-form{border:1px solid var(--line); background:var(--bg-2); padding:26px 24px; display:grid; gap:16px;}
+  .ly-form[hidden], #lyResult[hidden]{display:none;}
+  [dir] .ly-brand div, [dir] p.ly-tag, [dir] p.ly-left, [dir] .ly-gift p, [dir] .ly-gift{text-align:center;}
+  .ly-form .ly-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:620px){ .ly-form .ly-row{grid-template-columns:1fr;} }
+  .ly-form label{display:block; font-size:13px; color:var(--silver); margin-bottom:6px;}
+  .ly-form input{width:100%; padding:12px 14px; background:var(--bg); border:1px solid var(--line); color:var(--white); font-size:16px; font-family:inherit; letter-spacing:.5px; direction:ltr; text-align:start;}
+  [dir="rtl"] .ly-form input{text-align:right;}
+  .ly-form input:focus{outline:none; border-color:var(--gold);}
+  .ly-form input[aria-invalid="true"]{border-color:#c96a6a;}
+  .ly-err{color:#e08787; font-size:12.5px; margin-top:6px; min-height:0;}
+  .ly-form .btn-gold{justify-self:start; display:inline-flex; align-items:center; gap:10px; min-height:48px; cursor:pointer; font-family:inherit;}
+  .ly-form .btn-gold[disabled]{opacity:.65; cursor:wait;}
+  .ly-msg{font-size:13.5px; color:#e08787;}
+  .ly-msg.ok{color:var(--silver);}
+  .ly-help{font-size:12.5px; color:var(--silver-dim);}
+  .ly-help a{color:var(--gold); text-decoration:underline; text-underline-offset:3px;}
+
+  .ly-hello{display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; margin-bottom:16px;}
+  .ly-hello h3{font-size:clamp(20px,3vw,26px); font-weight:500;}
+  .ly-hello p{color:var(--silver-dim); font-size:13.5px;}
+  .ly-card{position:relative; border:1px solid rgba(201,162,92,.55); border-radius:14px; padding:30px clamp(16px,4vw,32px) 26px; overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 0%, rgba(201,162,92,.14), transparent 60%), linear-gradient(160deg,#121114,#0a0a0c 60%,#0d0c0e);
+    box-shadow:0 30px 60px -30px rgba(201,162,92,.35), inset 0 0 0 1px rgba(255,255,255,.02);}
+  .ly-card::after{content:''; position:absolute; inset:-40% -60%; background:linear-gradient(115deg,transparent 42%,rgba(255,236,196,.07) 50%,transparent 58%); pointer-events:none;}
+  .ly-brand{text-align:center; direction:ltr; font-family:'Jost',sans-serif;}
+  .ly-brand .b1{font-size:clamp(24px,4vw,30px); letter-spacing:.06em; color:#e8c27a; font-weight:500;}
+  .ly-brand .b2{font-size:12px; letter-spacing:.42em; color:var(--gold); margin-top:2px;}
+  .ly-brand .b3{font-size:clamp(17px,2.6vw,21px); letter-spacing:.06em; color:#e8c27a; margin-top:14px; font-weight:500;}
+  .ly-tag{text-align:center; color:var(--silver); font-size:14px; margin-top:6px;}
+  .ly-stamps{list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(8px,2vw,14px); margin:24px 0 22px; padding:0;}
+  .ly-stamp{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:84px; border:1px solid rgba(201,162,92,.28); border-radius:12px; background:rgba(255,255,255,.02); color:#5f5a52; font-size:12px; letter-spacing:.06em; text-align:center; padding:10px 6px;}
+  .ly-stamp svg{width:30px; height:30px;}
+  .ly-stamp.is-on{color:#f0cf86; border-color:rgba(232,194,122,.85); background:linear-gradient(160deg,rgba(201,162,92,.22),rgba(140,111,56,.12)); box-shadow:0 0 22px -6px rgba(232,194,122,.55), inset 0 0 18px -10px rgba(255,226,160,.6);}
+  .ly-stamp.is-on svg{filter:drop-shadow(0 0 6px rgba(240,207,134,.75));}
+  .ly-stamp.is-next{border-style:dashed; border-color:rgba(201,162,92,.55); color:#9a8a68;}
+  .ly-stamp.is-gift{color:#ffe3a3;}
+  @keyframes lyGlow{ 0%,100%{box-shadow:0 0 18px -8px rgba(232,194,122,.5);} 50%{box-shadow:0 0 28px -4px rgba(232,194,122,.8);} }
+  @keyframes lyIn{ from{opacity:0; transform:scale(.86);} to{opacity:1; transform:none;} }
+  .ly-stamp.is-on{animation:lyIn .5s ease-out both, lyGlow 3.2s ease-in-out 1s infinite;}
+  .ly-progress{display:flex; justify-content:space-between; align-items:baseline; gap:12px; color:#e8c27a; font-size:14px;}
+  .ly-bar{height:6px; border-radius:6px; background:rgba(201,162,92,.15); margin:10px 0 14px; overflow:hidden;}
+  .ly-bar i{display:block; height:100%; border-radius:6px; background:linear-gradient(90deg,#8c6f38,#e8c27a); transition:width 1s ease-out;}
+  [dir="rtl"] .ly-bar i{margin-inline-start:0; margin-inline-end:auto; background:linear-gradient(270deg,#8c6f38,#e8c27a);}  /* RTL: fills from the right */
+  .ly-left{text-align:center; color:var(--silver); font-size:13.5px;}
+  .ly-gift{text-align:center; margin-top:6px;}
+  .ly-gift p{color:#f0cf86; font-size:15px; margin-bottom:12px;}
+  .ly-buys{margin-top:22px; border:1px solid var(--line); background:var(--bg-2);}
+  .ly-buys h4{font-size:14px; font-weight:500; padding:14px 18px; border-bottom:1px solid var(--line); color:var(--gold);}
+  .ly-buys ol{list-style:none; margin:0; padding:0;}
+  .ly-buys li{display:flex; justify-content:space-between; gap:12px; padding:12px 18px; border-bottom:1px solid rgba(201,162,92,.1); font-size:14px;}
+  .ly-buys li:last-child{border-bottom:none;}
+  .ly-buys .d{color:var(--silver-dim); font-size:13px; white-space:nowrap;}
+  .ly-again{margin-top:18px; background:none; border:1px solid var(--line); color:var(--silver); padding:11px 22px; min-height:44px; font-family:inherit; font-size:13.5px; cursor:pointer;}
+  .ly-again:hover{border-color:var(--gold); color:var(--gold);}
+  @media (prefers-reduced-motion: reduce){
+    .ly-stamp.is-on{animation:none;}
+    .ly-bar i{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -624,6 +687,7 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
     <a href="#top"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
     <a href="#shop"><span class="lang-ar">المتجر</span><span class="lang-en">Shop</span></a>
     <a href="#story"><span class="lang-ar">القصة</span><span class="lang-en">About</span></a>
+    <a href="#loyalty"><span class="lang-ar">بطاقة الولاء</span><span class="lang-en">Loyalty</span></a>
     <a href="#contact"><span class="lang-ar">تواصل</span><span class="lang-en">Contact</span></a>
   </nav>
   <div class="head-right">
@@ -641,6 +705,7 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
     <a href="#top"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
     <a href="#shop"><span class="lang-ar">المتجر</span><span class="lang-en">Shop</span></a>
     <a href="#story"><span class="lang-ar">القصة</span><span class="lang-en">About</span></a>
+    <a href="#loyalty"><span class="lang-ar">بطاقة الولاء</span><span class="lang-en">Loyalty</span></a>
     <a href="#contact"><span class="lang-ar">تواصل</span><span class="lang-en">Contact</span></a>
     <button type="button" class="lang-switch" id="langSwitchM" lang="en" data-lang-ar="en" data-lang-en="ar" aria-label="EN — Switch to English" data-aria-ar="EN — Switch to English" data-aria-en="AR — التحويل للعربية"><b class="lang-ar">AR</b><span class="lang-ar">|</span><span class="lang-ar" style="opacity:.5">EN</span>
       <b class="lang-en">EN</b><span class="lang-en">|</span><span class="lang-en" style="opacity:.5">AR</span></button>
@@ -791,6 +856,37 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   </div>
   <div class="rv-more-wrap">
     <button type="button" class="rev-more" id="revMore" hidden aria-controls="reviewsGrid"><span class="lang-ar">عرض المزيد</span><span class="lang-en">Show more</span></button>
+  </div>
+</section>
+
+<section id="loyalty" class="reveal loyalty" aria-labelledby="loyaltyTitle">
+  <div class="section-head">
+    <h2 id="loyaltyTitle"><span class="lang-ar">بطاقة الولاء</span><span class="lang-en">Loyalty Card</span></h2>
+    <div class="rule"></div>
+    <p><span class="lang-ar">مع كل ساعة تشتريها بتنوّر تاج في بطاقتك — كمّل 6 وخد هديتك.</span><span class="lang-en">Every watch you buy lights up a crown on your card — collect 6 and get your gift.</span></p>
+  </div>
+  <div class="ly-wrap">
+    <form class="ly-form" id="lyForm" novalidate>
+      <div class="ly-row">
+        <div>
+          <label for="lyPhone"><span class="lang-ar">رقم الموبايل</span><span class="lang-en">Mobile number</span></label>
+          <input id="lyPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="01xxxxxxxxx" aria-describedby="lyPhoneErr">
+          <p class="ly-err" id="lyPhoneErr"></p>
+        </div>
+        <div>
+          <label for="lyCode"><span class="lang-ar">كود البطاقة (6 أرقام)</span><span class="lang-en">Card code (6 digits)</span></label>
+          <input id="lyCode" type="password" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="••••••" aria-describedby="lyCodeErr lyHelp">
+          <p class="ly-err" id="lyCodeErr"></p>
+        </div>
+      </div>
+      <button type="submit" class="btn-gold" id="lyBtn">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z"/></svg>
+        <span id="lyBtnText"><span class="lang-ar">اعرض بطاقتي</span><span class="lang-en">Show my card</span></span>
+      </button>
+      <p class="ly-msg" id="lyMsg" role="alert"></p>
+      <p class="ly-help" id="lyHelp"><span class="lang-ar">الكود بتاخده مننا مع أول عملية شراء. مش معاك كود؟ <a href="https://wa.me/201090186280" target="_blank" rel="noopener">كلّمنا على واتساب</a>.</span><span class="lang-en">You get your code from us with your first purchase. No code? <a href="https://wa.me/201090186280" target="_blank" rel="noopener">Message us on WhatsApp</a>.</span></p>
+    </form>
+    <div id="lyResult" hidden tabindex="-1"></div>
   </div>
 </section>
 
@@ -3528,6 +3624,16 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
 }, {threshold:0, rootMargin:'0px 0px -10% 0px'});
 document.querySelectorAll('.reveal').forEach(el => { el.classList.add('pre'); revealObserver.observe(el); });
+  // Backup for browsers whose IntersectionObserver misbehaves (some in-app browsers from Instagram/Facebook/WhatsApp,
+  // or pages that are not being painted): on scroll, reveal whatever has reached the screen.
+  let revealT = null;
+  const revealOnScroll = () => {
+    document.querySelectorAll('.reveal.pre:not(.visible)').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if(r.top < window.innerHeight * 0.95 && r.bottom > 0){ el.classList.add('visible'); revealObserver.unobserve(el); }
+    });
+  };
+  window.addEventListener('scroll', () => { clearTimeout(revealT); revealT = setTimeout(revealOnScroll, 120); }, { passive:true });
   // safety net: anything already on screen but still hidden after 3s becomes visible
   setTimeout(function(){
     document.querySelectorAll('.reveal.pre:not(.visible)').forEach(function(el){
@@ -3545,6 +3651,139 @@ document.querySelectorAll('.reveal').forEach(el => { el.classList.add('pre'); re
 syncLangAttrs();
 </script>
 
+
+<script>
+/* ===== Loyalty card =====
+ * Paste the Web app URL of google-apps-script/loyalty.gs here (Deploy → Manage deployments → Web app URL).
+ * Setup guide: docs/loyalty-setup.md. Empty = the form explains the card is coming soon.
+ * Preview without a sheet: open the page with ?loyaltyDemo=1
+ */
+const LOYALTY_URL = 'https://script.google.com/macros/s/AKfycbys5ciF9qJ234iQQdivMq8h3kScO5zUlMdX_W33GkPMrOT25VNLobzMUyqzZVJpyj6TLw/exec';
+const LOYALTY_STAMPS = 6;   // must match STAMPS in loyalty.gs
+
+(function(){
+  const form = document.getElementById('lyForm');
+  if(!form) return;
+  const $ = id => document.getElementById(id);
+  const phoneEl = $('lyPhone'), codeEl = $('lyCode'), btn = $('lyBtn'), msg = $('lyMsg'), out = $('lyResult');
+  const isEn = () => document.body.classList.contains('en');
+  const L = (ar, en) => '<span class="lang-ar">' + ar + '</span><span class="lang-en">' + en + '</span>';
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  const digits = s => String(s || '').replace(/[٠-٩]/g, c => String(c.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, c => String(c.charCodeAt(0) - 0x06F0)).replace(/\D/g, '');
+  function normPhone(s){
+    let d = digits(s);
+    if(/^0020/.test(d)) d = d.slice(4); else if(/^20(?=1\d{9}$|01\d{9}$)/.test(d)) d = d.slice(2);
+    if(/^1\d{9}$/.test(d)) d = '0' + d;
+    return d;
+  }
+  const CROWN = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 8.2l4.6 3.9L12 5l4.4 7.1L21 8.2 19.3 17.5H4.7z" opacity=".95"/><rect x="4.6" y="18.6" width="14.8" height="1.9" rx=".6"/></svg>';
+  const CROWN_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8.2l4.6 3.9L12 5l4.4 7.1L21 8.2 19.3 17.5H4.7z"/><path d="M4.6 19.6h14.8"/></svg>';
+
+  function setErr(el, box, ar, en){
+    el.setAttribute('aria-invalid', ar ? 'true' : 'false');
+    $(box).innerHTML = ar ? L(ar, en) : '';
+  }
+  function setBusy(on){
+    btn.disabled = on;
+    $('lyBtnText').innerHTML = on ? L('جاري البحث…', 'Checking…') : L('اعرض بطاقتي', 'Show my card');
+  }
+
+  function cardHTML(d){
+    const total = Number(d.stamps) || LOYALTY_STAMPS;
+    const count = Math.max(0, Number(d.count) || 0);
+    const lit = Math.min(count, total);
+    const done = count >= total;
+    const pct = Math.round(lit / total * 100);
+    const left = total - lit;
+    let stamps = '';
+    for(let i = 1; i <= total; i++){
+      const on = i <= lit, next = !on && i === lit + 1, gift = i === total;
+      stamps += '<li class="ly-stamp' + (on ? ' is-on' : '') + (next ? ' is-next' : '') + (gift && on ? ' is-gift' : '') + '"' +
+        (on ? ' style="animation-delay:' + (i * 0.12).toFixed(2) + 's, ' + (1 + i * 0.12).toFixed(2) + 's"' : '') + '>' +
+        (on ? CROWN : CROWN_OFF) +
+        (on ? L('تم', 'COLLECTED') : (gift ? L('الهدية', 'GIFT') : L('ختم ' + i, 'STAMP ' + i))) +
+        '<span class="sr-only">' + (on ? L(' — اتجمّع', ' — collected') : L(' — لسه', ' — not yet')) + '</span></li>';
+    }
+    const first = String(d.name || '').trim().split(/\s+/)[0] || '';
+    const buys = (d.purchases || []).filter(p => p && (p.watch || p.date));
+    return '' +
+      '<div class="ly-hello"><h3>' + L('أهلًا بيك' + (first ? ' يا <bdi>' + esc(first) + '</bdi>' : '') + '!', 'Welcome back' + (first ? ', <bdi>' + esc(first) + '</bdi>' : '') + '!') + '</h3>' +
+        '<p>' + L('عضو في برنامج الولاء', 'Loyalty member') + '</p></div>' +
+      '<div class="ly-card">' +
+        '<div class="ly-brand"><div class="b1">TICK TALE</div><div class="b2">WATCHES</div><div class="b3">LOYALTY CARD</div></div>' +
+        '<p class="ly-tag">' + L('ولاءك ليه مكافأة.', 'Your loyalty, your rewards.') + '</p>' +
+        '<ol class="ly-stamps" aria-label="' + (isEn() ? 'Stamps' : 'الأختام') + '">' + stamps + '</ol>' +
+        '<div class="ly-progress"><span>' + L('<bdi>' + lit + '</bdi> من <bdi>' + total + '</bdi> مشتريات', '<bdi>' + lit + '</bdi> of <bdi>' + total + '</bdi> purchases') + '</span><span><bdi>' + pct + '%</bdi></span></div>' +
+        '<div class="ly-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + lit + '"><i style="width:0%" data-w="' + pct + '%"></i></div>' +
+        (done
+          ? '<div class="ly-gift"><p>' + L('مبروك! كمّلت الـ ' + total + ' تيجان وهديتك جاهزة.', 'Congratulations! You collected all ' + total + ' crowns — your gift is ready.') + '</p>' +
+            '<a class="btn-gold" href="https://wa.me/201090186280?text=' + encodeURIComponent('مرحبًا Tick Tale، كمّلت بطاقة الولاء وعايز أستلم هديتي') + '" target="_blank" rel="noopener">' + L('استلم هديتك على واتساب', 'Claim your gift on WhatsApp') + '</a></div>'
+          : '<p class="ly-left">' + L('فاضل <bdi>' + left + '</bdi> ' + (left === 1 ? 'عملية شراء' : 'مشتريات') + ' وتاخد هديتك المميزة', '<bdi>' + left + '</bdi> more ' + (left === 1 ? 'purchase' : 'purchases') + ' to unlock your special gift') + '</p>') +
+      '</div>' +
+      (buys.length
+        ? '<div class="ly-buys"><h4>' + L('مشترياتك', 'Your purchases') + '</h4><ol>' +
+            buys.map(p => '<li><span><bdi>' + esc(p.watch || '—') + '</bdi></span><span class="d"><bdi>' + esc(p.date || '') + '</bdi></span></li>').join('') + '</ol></div>'
+        : '') +
+      '<button type="button" class="ly-again" id="lyAgain">' + L('استعلام برقم تاني', 'Check another number') + '</button>';
+  }
+
+  function showCard(d){
+    out.innerHTML = cardHTML(d);
+    form.hidden = true;
+    out.hidden = false;
+    out.focus({ preventScroll: true });
+    try{ out.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }catch(e){}
+    requestAnimationFrame(() => setTimeout(() => { const bar = out.querySelector('.ly-bar i'); if(bar) bar.style.width = bar.getAttribute('data-w'); }, 60));
+    // safety: if frames are not painted (some in-app browsers), still fill the bar
+    setTimeout(() => { const bar = out.querySelector('.ly-bar i'); if(bar && bar.style.width === '0%') bar.style.width = bar.getAttribute('data-w'); }, 800);
+    $('lyAgain').addEventListener('click', () => {
+      out.hidden = true; out.innerHTML = '';
+      form.hidden = false; codeEl.value = ''; msg.textContent = '';
+      phoneEl.focus();
+    });
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    msg.className = 'ly-msg'; msg.innerHTML = '';
+    const phone = normPhone(phoneEl.value), code = digits(codeEl.value);
+    const badPhone = !/^01[0125]\d{8}$/.test(phone), badCode = !/^\d{6}$/.test(code);
+    setErr(phoneEl, 'lyPhoneErr', badPhone ? 'اكتب رقم موبايل مصري من 11 رقم يبدأ بـ 01' : '', 'Enter an 11-digit Egyptian mobile number starting with 01');
+    setErr(codeEl, 'lyCodeErr', badCode ? 'الكود 6 أرقام' : '', 'The code is 6 digits');
+    if(badPhone){ phoneEl.focus(); return; }
+    if(badCode){ codeEl.focus(); return; }
+    if(!LOYALTY_URL){
+      msg.innerHTML = L('بطاقة الولاء هتشتغل قريبًا — تابعنا على واتساب.', 'The loyalty card is coming soon — follow us on WhatsApp.');
+      return;
+    }
+    setBusy(true);
+    const ctrl = 'AbortController' in window ? new AbortController() : null;
+    const timer = setTimeout(() => ctrl && ctrl.abort(), 15000);
+    try{
+      // text/plain body = a "simple" request (no CORS preflight); phone and code never go in the URL
+      const res = await fetch(LOYALTY_URL, { method: 'POST', body: JSON.stringify({ phone: phone, code: code }), signal: ctrl ? ctrl.signal : undefined });
+      const data = await res.json();
+      if(data && data.ok) showCard(data);
+      else if(data && data.error === 'locked') msg.innerHTML = L('محاولات كتير غلط. جرّب تاني بعد ' + (data.minutes || 15) + ' دقيقة.', 'Too many wrong tries. Try again in ' + (data.minutes || 15) + ' minutes.');
+      else if(data && data.error === 'invalid') msg.innerHTML = L('راجع الرقم والكود.', 'Check the number and the code.');
+      else { msg.innerHTML = L('الرقم أو الكود مش صح. اتأكد منهم أو كلّمنا على واتساب.', 'The number or the code is not right. Check them or message us on WhatsApp.'); codeEl.focus(); codeEl.select(); }
+    }catch(err){
+      msg.innerHTML = L('مش قادرين نوصل للبطاقة دلوقتي. اتأكد من النت وجرّب تاني.', 'We couldn’t reach your card right now. Check your connection and try again.');
+    }finally{
+      clearTimeout(timer);
+      setBusy(false);
+    }
+  });
+  [phoneEl, codeEl].forEach(el => el.addEventListener('input', () => { if(el.getAttribute('aria-invalid') === 'true') el.setAttribute('aria-invalid', 'false'); }));
+
+  // Design preview without a sheet: ?loyaltyDemo=1 (shows example data only, nothing is fetched)
+  try{
+    if(new URLSearchParams(location.search).get('loyaltyDemo') === '1'){
+      showCard({ name: 'Ahmed', count: 2, stamps: LOYALTY_STAMPS, purchases: [{ watch: 'موديل 015', date: '2026-10-05' }, { watch: 'موديل 1901', date: '2026-09-01' }] });
+    }
+  }catch(e){}
+})();
+</script>
 
 <script>
 /* 3D Tick Tale watch: real-time hands, tilts with mouse / finger, gentle idle sway. No external libraries. */
