@@ -284,8 +284,12 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   .pm-variants .swatches{margin-top:8px;}
   .sw.is-sold:not([aria-pressed="true"]) i{opacity:.5;}
   .sw.is-sold::after{content:''; position:absolute; width:26px; height:1.5px; background:var(--silver); transform:rotate(-45deg); pointer-events:none;}
-  .pm-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;}
-  .pm-cta-slot{flex:1 1 220px; display:flex;}
+  .pm-actions{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:24px;}
+  .pm-cta-slot{display:contents;}
+  .pm-actions #pmWa{grid-column:1 / -1;}
+  .pm-actions .pm-buy-now{margin-top:0;}
+  .pm-actions .pm-share{width:100%; justify-content:center;}
+  .pm-actions:has(.pm-ask) .pm-share{grid-column:1 / -1;}
   .pmodal-cta{flex:1 1 auto; min-height:50px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px;
     background:var(--gold); border:1px solid var(--gold); color:#0a0a0c; font-family:inherit; font-size:15px; letter-spacing:.3px; line-height:1.4; cursor:pointer;
     transition:background-color .2s ease-out, color .2s ease-out;}
@@ -432,6 +436,7 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
     padding:12px 22px; background:rgba(16,16,18,.97); border:1px solid var(--gold); color:var(--white); font-size:14px; line-height:1.6; pointer-events:none;
     opacity:0; transform:translateY(8px); transition:opacity .2s ease-out, transform .2s ease-out;}
   [dir] .toast{text-align:center;}
+  html[data-theme="light"] .toast{background:#111; border-color:#111; color:#fff; box-shadow:0 8px 24px rgba(0,0,0,.18);}
   .toast.show{opacity:1; transform:none;}
   @media(min-width:901px){ .toast{bottom:calc(32px + env(safe-area-inset-bottom,0px));} }
 
@@ -457,7 +462,9 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   .sticky-wa{position:fixed; bottom:calc(18px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%); z-index:70;
     background:var(--gold); color:#0a0a0c; padding:13px 30px; font-size:13.5px; letter-spacing:.5px; display:none; border:none;
     font-family:inherit; line-height:1.4; min-height:48px; cursor:pointer;}
-  @media(max-width:900px){ .sticky-wa{display:block;} }
+  @media(max-width:900px){ .sticky-wa{display:inline-flex; align-items:center; gap:10px; white-space:nowrap;} }
+  .sticky-wa[hidden]{display:none !important;}
+  .sticky-wa svg{width:18px; height:18px;}
 
   html.force-visible .hero > *{animation:none; opacity:1;}
   .hero-visual{display:flex; align-items:center; justify-content:center; gap:clamp(44px,6vw,70px); flex-wrap:wrap; width:min(1000px,92vw); margin-bottom:34px;}
@@ -607,6 +614,15 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   .op-btot.is-total{font-size:16px; color:var(--white);}
   .op-btot.is-total b{color:var(--gold); font-weight:500;}
 
+  /* photo loading: shimmer until the image is ready, then fade in */
+  @keyframes phShimmer{ from{background-position:150% 0;} to{background-position:-50% 0;} }
+  .card .ph.has-img:not(.img-ok)::after{content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(100deg, transparent 30%, rgba(201,162,92,.10) 50%, transparent 70%) 0 0 / 200% 100%; animation:phShimmer 1.4s linear infinite;}
+  .card .ph.has-img img{opacity:0; transition:opacity .35s ease-out;}
+  .card .ph.has-img.img-ok img{opacity:1;}
+  html[data-theme="light"] .card .ph.has-img:not(.img-ok)::after{background-image:linear-gradient(100deg, transparent 30%, rgba(0,0,0,.06) 50%, transparent 70%);}
+  @media (prefers-reduced-motion: reduce){ .card .ph.has-img:not(.img-ok)::after{animation:none;} .card .ph.has-img img{transition:none;} }
+
   /* offer card: watches side by side */
   .offer-collage{position:absolute; inset:0; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:2px; background:var(--line);}
   .card .ph .offer-collage img, .offer-collage img{position:static; inset:auto; margin:0; width:100%; height:100%; max-width:none; max-height:none; object-fit:cover;}
@@ -638,12 +654,14 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   .cart-total{display:flex; justify-content:space-between; align-items:baseline; font-size:17px; margin:8px 0 16px;}
   .cart-total b{color:var(--gold); font-weight:500;}
   .cart-continue{display:block; width:100%; margin-top:10px; padding:12px; text-align:center; cursor:pointer; font-family:inherit; background:none;}
+  .cart-panel [data-cart-checkout]{display:flex; width:100%;}
+  .cart-continue.is-link{border:none; color:var(--silver); text-decoration:underline; text-underline-offset:4px; min-height:44px; width:auto; margin:10px auto 0; padding:12px 20px;}
   .cart-empty{text-align:center; padding:30px 0;}
   [dir] .cart-empty p{text-align:center; color:var(--silver-dim); margin-bottom:16px;}
   .pm-buy-now{background:none; color:var(--gold); border:1px solid var(--gold); margin-top:10px;}
   .pm-buy-now:hover{background:var(--gold); color:#0a0a0c;}
-  html[data-theme="light"] .pm-buy-now{color:var(--gold);}
-  html[data-theme="light"] .pm-buy-now:hover{color:#fff;}
+  html[data-theme="light"] .pmodal-cta.pm-buy-now{color:var(--gold);}
+  html[data-theme="light"] .pmodal-cta.pm-buy-now:hover{color:#fff;}
   .pmodal-cta svg, .card .actions .wa svg{width:16px; height:16px; vertical-align:-3px; margin-inline-end:6px;}
   .op-bc{display:block; font-size:12px; color:var(--silver-dim);}
   html[data-theme="light"] .ci-img{background:#efefef;}
@@ -744,7 +762,9 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
   }
   /* ===== Light mode (html[data-theme="light"]) ===== */
   .theme-switch{display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; background:none; border:1px solid var(--line); color:var(--silver); cursor:pointer; padding:0;}
-  .theme-switch:hover{border-color:var(--gold); color:var(--gold);}
+  @media (hover:hover){ .theme-switch:hover{border-color:var(--gold); color:var(--gold);} }
+  .theme-switch:active{transform:scale(.94);}
+  html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after{transition:none !important;}
   .theme-switch .ic-moon{display:none;}
   html[data-theme="light"] .theme-switch .ic-sun{display:none;}
   html[data-theme="light"] .theme-switch .ic-moon{display:block;}
@@ -1255,7 +1275,7 @@ setTimeout(function(){document.documentElement.classList.add("force-visible")},3
 
 <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true" data-layer-keep></div>
 
-<button class="sticky-wa" id="stickyWa"><span class="lang-ar">اطلب الآن</span><span class="lang-en">Order Now</span></button>
+<button class="sticky-wa" id="stickyWa" hidden></button>
 
 <script>
 const WA_NUMBER = "201090186280";
@@ -1795,9 +1815,9 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     var parts = !v.image ? offerParts(v) : [];
     var collage = parts.length > 1 ? '<span class="offer-collage n' + parts.length + '">' + parts.map(function(pw){
       var pv = pw.variants[defaultIdx(pw)];
-      return pv && pv.image ? '<img src="' + esc(driveDirect(pv.image)) + '" alt="" loading="lazy" decoding="async">' : '';
+      return pv && pv.image ? '<img src="' + esc(driveDirect(pv.image)) + '" alt="" loading="lazy" decoding="async" onload="this.closest(\'.ph\').classList.add(\'img-ok\')">' : '';
     }).join('') + '<b class="offer-plus" aria-hidden="true">+</b></span>' : '';
-    var img = collage ? collage : v.image ? '<img src="' + esc(driveDirect(v.image)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.remove(\'has-img\');this.remove();">' : '';
+    var img = collage ? collage : v.image ? '<img src="' + esc(driveDirect(v.image)) + '" alt="" loading="lazy" decoding="async" onload="this.closest(\'.ph\').classList.add(\'img-ok\')" onerror="this.parentNode.classList.remove(\'has-img\');this.remove();">' : '';
     var order = sold
       ? '<a class="ask" href="' + esc(askAvailabilityUrl(w, v)) + '" target="_blank" rel="noopener">' + ICONS.chat + '<span>' + (en ? 'Ask about availability' : 'اسألنا عن التوفر') + '</span>' + ctx + '</a>'
       : '<button type="button" class="wa" data-act="cart" data-key="' + key + '" data-v="' + sel + '">' + ICONS.cart + '<span>' + (en ? 'Add to cart' : 'أضف للسلة') + '</span>' + ctx + '</button>';
@@ -2427,7 +2447,7 @@ const TTUI = (function(){
   function galleryFor(v){
     var out = [], seen = TT.dict();
     function add(type, url){ url = String(url || '').trim(); if(!url || seen[url]) return; seen[url] = 1; out.push({ type:type, url:url }); }
-    if(v){ add('video', v.video); add('image', v.image); (v.images || []).forEach(function(u){ add('image', u); }); }
+    if(v){ add('image', v.image); (v.images || []).forEach(function(u){ add('image', u); }); add('video', v.video); }   // photo first, video after
     if(v && !out.length && TT.offerParts) TT.offerParts(v).forEach(function(pw){ var pv = pw.variants[TT.defaultIdx(pw)]; if(pv) add('image', pv.image); });
     return out;
   }
@@ -3845,7 +3865,7 @@ function showAllReviews(){ TTReviews.showAll(); }
 const genericWa = `https://wa.me/${WA_NUMBER}`;
 document.getElementById('headWa').href = genericWa;
 document.getElementById('socialWa').href = genericWa;
-document.getElementById('stickyWa').onclick = () => window.open(genericWa, '_blank', 'noopener');
+document.getElementById('stickyWa').onclick = () => { if(TT.cart) TT.cart.open(document.getElementById('cartBtn')); };
 
 // Mobile nav (spec §2.2): disclosure panel with aria-expanded; closes on link click, Esc, outside tap, or growing to desktop width.
 (function(){
@@ -3948,6 +3968,15 @@ syncLangAttrs();
   function renderBadge(){
     const n = count(), el = $('cartCount');
     el.hidden = !n; el.textContent = String(n);
+    // phones: a floating "cart" shortcut once something is in the cart
+    const st = $('stickyWa');
+    if(st){
+      st.hidden = !n;
+      if(n){
+        const total = items().reduce((sum, it) => sum + it.v.price * it.qty, 0);
+        st.innerHTML = TT.icons.cart + '<span>' + (en() ? 'Cart (' + n + ') · ' : 'السلة (' + n + ') · ') + TT.fmtPrice(total) + '</span>';
+      }
+    }
     $('cartBtn').setAttribute('aria-label', (en() ? 'Cart' : 'السلة') + (n ? ' (' + n + ')' : ''));
   }
   function render(){
@@ -3974,7 +4003,7 @@ syncLangAttrs();
     }).join('') + '</ul>' +
     '<p class="cart-total"><span>' + (e ? 'Total' : 'الإجمالي') + '</span><b>' + TT.fmtPrice(total) + '</b></p>' +
     '<button type="button" class="pmodal-cta" data-cart-checkout>' + (e ? 'Checkout' : 'إتمام الطلب') + '</button>' +
-    '<button type="button" class="btn-outline cart-continue" data-cart-continue>' + (e ? 'Continue shopping' : 'كمّل تسوّق') + '</button>';
+    '<button type="button" class="cart-continue is-link" data-cart-continue>' + (e ? 'Continue shopping' : 'كمّل تسوّق') + '</button>';
   }
   // index i refers to items(); map it back to the stored line
   const lineOf = i => { const list = items(); const it = list[i]; return it ? lines.find(l => l.k === it.w.key && l.vs === it.v.slug && TT.watchColors(it.w)[l.c] === (it.color || undefined)) || lines.find(l => l.k === it.w.key && l.vs === it.v.slug) : null; };
@@ -4016,17 +4045,22 @@ syncLangAttrs();
     });
     if(meta) meta.setAttribute('content', light ? '#ffffff' : '#070708');
   }
+  let unlock = 0;
   btns.forEach(b => b.addEventListener('click', () => {
     const light = root.getAttribute('data-theme') !== 'light';
+    // flip everything in one frame (otherwise ~100 elements animate their colors separately and it feels laggy)
+    root.classList.add('theme-switching');
     if(light) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
     try{ localStorage.setItem('tt-theme', light ? 'light' : 'dark'); }catch(e){}
     sync();
+    cancelAnimationFrame(unlock);
+    unlock = requestAnimationFrame(() => { unlock = requestAnimationFrame(() => root.classList.remove('theme-switching')); });
   }));
   document.addEventListener('tt:lang', sync);
   sync();
 })();
 
-const LOYALTY_URL = 'https://script.google.com/macros/s/AKfycbys5ciF9qJ234iQQdivMq8h3kScO5zUlMdX_W33GkPMrOT25VNLobzMUyqzZVJpyj6TLw/exec';
+const LOYALTY_URL = '';
 const LOYALTY_STAMPS = 6;   // must match STAMPS in loyalty.gs
 
 (function(){
