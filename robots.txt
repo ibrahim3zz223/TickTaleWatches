@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ticktalewatches.vercel.app/sitemap.xml
